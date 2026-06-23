@@ -1,0 +1,6 @@
+{
+  "name": "Viral Creator",
+  "description": "Short-form video creator with AI trend detection and analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
