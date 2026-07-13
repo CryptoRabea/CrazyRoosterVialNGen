@@ -13,9 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.viewmodel.AgentViewModel
 
 @Composable
-fun StrategyScreen() {
+fun StrategyScreen(viewModel: AgentViewModel = viewModel()) {
+    val strategyText by viewModel.strategyText.collectAsState()
+    val isGeneratingStrategy by viewModel.isGeneratingStrategy.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,9 +44,17 @@ fun StrategyScreen() {
                     Text("30-Day AI Strategy", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
                 Spacer(Modifier.height(4.dp))
-                Text("Your content calendar is optimized for peak engagement. AI agents have mapped out trends for the next 30 days.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                
+                if (isGeneratingStrategy) {
+                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                } else if (strategyText != null) {
+                    Text(strategyText!!, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                } else {
+                    Text("Your content calendar is optimized for peak engagement. AI agents have mapped out trends for the next 30 days.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                }
+                
                 Spacer(Modifier.height(8.dp))
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { viewModel.generateStrategy() }) {
                     Text("Regenerate Strategy")
                 }
             }
